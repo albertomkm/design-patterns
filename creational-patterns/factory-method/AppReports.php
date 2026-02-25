@@ -4,10 +4,20 @@ abstract class FileGenerator{
 
 	abstract protected function createReport(): Report;
 
-	public function export(array $data):void{
-		$report = $this->createReport();
-		$cleanData = $this->prepareData($data);
-		echo $report->render($cleanData);
+	public function export(array $data=[]):void{
+		 try{
+            if (count($data)===0) {
+                throw new Exception("Data missing");
+            }
+			else{
+				$report = $this->createReport();
+				$cleanData = $this->prepareData($data);
+				echo $report->render($cleanData);
+			}
+		 }catch(Exception $e){
+			echo "Error: ".$e->getMessage();
+		 }
+		
 	}
 	public function prepareData(array $data):array{
         $filteredData = array_filter($data);
@@ -44,9 +54,10 @@ class PDFReport implements Report{
 	}
 }
 
-$datosVentas = ["Venta 1: $100", "Venta 2: $250", ""];
+// $datosVentas = ["Venta 1: $100", "Venta 2: $250", ""];
+$datosVentas = [];
 $csvFile = new CSVGenerator();
-$csvFile->export($datosVentas);
+$csvFile->export();
 echo "<br><br><br>";
 $pdfFile = new PDFGenerator();
 $pdfFile->export($datosVentas);

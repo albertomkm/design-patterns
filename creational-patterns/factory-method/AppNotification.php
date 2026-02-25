@@ -4,9 +4,18 @@ abstract class Notifier {
 
     abstract public function getNotificationTransport(): Notification;
 
-    public function notify(string $message):void{
-        $transport = $this->getNotificationTransport();
-        $transport->send($message);
+    public function notify(string $message=""):void{
+        try{
+            if (empty($message)) {
+                throw new Exception("Message missing");
+            }else{
+                $transport = $this->getNotificationTransport();
+                $transport->send($message);
+            }
+        }catch(Throwable $e){
+           echo "Error, message not send: ".$e->getMessage();
+        }
+        
     }
 }
 
@@ -58,5 +67,5 @@ class SMSNotification implements Notification{
 }
 
 $notifyEmail = new EmailNotifier("alberto@correo.com");
-$notifyEmail->notify("Este es el mensaje de correo");
+$notifyEmail->notify("holi");
 echo "<br>";
