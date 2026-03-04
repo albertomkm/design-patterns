@@ -20,12 +20,12 @@ abstract class Notifier {
 }
 
 class EmailNotifier extends Notifier{ 
-    private string $message;
-    public function __construct( string $message){
-        $this->message = $message;
+    private string $email;
+    public function __construct( string $email){
+        $this->email = $email;
     }
     public function getNotificationTransport():Notification{
-        return new EmailNotification($this->message);
+        return new EmailNotification($this->email);
     }
 
 }
